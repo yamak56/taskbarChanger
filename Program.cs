@@ -28,9 +28,14 @@ namespace TaskBarChanger
             UpdateNotifyIcon(actualIsAutoHide); // アイコンは "表示" の状態に合わせる
         }
 
+        static bool _controlByExternalDisplay = true;
+
         private static void SystemEvents_DisplaySettingsChanged(object? sender, EventArgs e)
         {
-            UpdateTaskbarState(); // ディスプレイ設定変更時にタスクバーの状態を更新
+            if (_controlByExternalDisplay)
+            {
+                UpdateTaskbarState(); // ディスプレイ設定変更時にタスクバーの状態を更新
+            }
         }
 
         static readonly NotifyIcon notifyIcon = new NotifyIcon();
@@ -48,6 +53,20 @@ namespace TaskBarChanger
         private static ContextMenuStrip ContextMenu()
         {
             var menu = new ContextMenuStrip();
+
+            var externalDisplayControlMenuItem = new ToolStripMenuItem("外部ディスプレイによる制御");
+            externalDisplayControlMenuItem.CheckOnClick = true;
+            externalDisplayControlMenuItem.Checked = _controlByExternalDisplay;
+            externalDisplayControlMenuItem.Click += (s, e) =>
+            {
+                _controlByExternalDisplay = externalDisplayControlMenuItem.Checked;
+                if (_controlByExternalDisplay)
+                {
+                    UpdateTaskbarState(); // 有効になったらすぐに状態を更新
+                }
+            };
+            menu.Items.Add(externalDisplayControlMenuItem);
+
             menu.Items.Add("終了", null, (s, e) =>
             {
                 Application.Exit();
