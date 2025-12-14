@@ -1,3 +1,5 @@
+using Microsoft.Win32;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace TaskBarChanger
@@ -13,8 +15,22 @@ namespace TaskBarChanger
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            SystemEvents.DisplaySettingsChanged += new EventHandler(SystemEvents_DisplaySettingsChanged);
+            UpdateTaskbarState(); // 初期状態を設定
             CreateNotifyIcon();
             Application.Run();
+        }
+
+        private static void UpdateTaskbarState()
+        {
+            var isAutoHide = System.Windows.Forms.Screen.AllScreens.Length == 1;
+            var actualIsAutoHide = TaskbarHelper.SetAutoHideState(isAutoHide);
+            UpdateNotifyIcon(actualIsAutoHide); // アイコンは "表示" の状態に合わせる
+        }
+
+        private static void SystemEvents_DisplaySettingsChanged(object? sender, EventArgs e)
+        {
+            UpdateTaskbarState(); // ディスプレイ設定変更時にタスクバーの状態を更新
         }
 
         static readonly NotifyIcon notifyIcon = new NotifyIcon();
@@ -23,7 +39,6 @@ namespace TaskBarChanger
 
         private static void CreateNotifyIcon()
         {
-            notifyIcon.Icon = TaskbarHelper.IsNotAutoHide() ? showIcon : hideIcon;
             notifyIcon.ContextMenuStrip = ContextMenu();
             notifyIcon.Text = "TaskBarChanger";
             notifyIcon.MouseDoubleClick += NotifyIconOnMouseDoubleClick;
@@ -42,9 +57,13 @@ namespace TaskBarChanger
 
         private static void NotifyIconOnMouseDoubleClick(object? s, MouseEventArgs e)
         {
-            var isShow = TaskbarHelper.ChangeAutoHideState();
-            notifyIcon.Icon = isShow ? showIcon : hideIcon;
+            var isAutoHide = TaskbarHelper.ChangeAutoHideState();
+            UpdateNotifyIcon(isAutoHide);
         }
 
+        private static void UpdateNotifyIcon(bool isAutoHide)
+        {
+            notifyIcon.Icon = isAutoHide ? hideIcon : showIcon;
+        }
     }
 }

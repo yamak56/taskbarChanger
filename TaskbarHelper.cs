@@ -15,9 +15,14 @@ using System.Runtime.InteropServices;
 
     public static bool ChangeAutoHideState()
     {
-        _msg.lParam = IsNotAutoHide() ? TrayAbsAutoHide : TrayAbsAlwaysOnTop;
+        return SetAutoHideState(IsNotAutoHide());
+    }
+
+    public static bool SetAutoHideState(bool isAutoHide)
+    {
+        _msg.lParam = isAutoHide ? TrayAbsAutoHide : TrayAbsAlwaysOnTop;
         _ = SHAppBarMessage(TrayAbmSetState, ref _msg);
-        return _msg.lParam == TrayAbsAlwaysOnTop;
+        return _msg.lParam == TrayAbsAutoHide;
     }
 
     /// <summary>
