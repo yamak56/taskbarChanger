@@ -28,7 +28,7 @@ namespace TaskBarChanger
             UpdateNotifyIcon(actualIsAutoHide); // アイコンは "表示" の状態に合わせる
         }
 
-        static bool _controlByExternalDisplay = true;
+        static bool _controlByExternalDisplay = IniFileHandler.ReadControlByExternalDisplay(true);
 
         private static void SystemEvents_DisplaySettingsChanged(object? sender, EventArgs e)
         {
@@ -60,6 +60,7 @@ namespace TaskBarChanger
             externalDisplayControlMenuItem.Click += (s, e) =>
             {
                 _controlByExternalDisplay = externalDisplayControlMenuItem.Checked;
+                IniFileHandler.WriteControlByExternalDisplay(_controlByExternalDisplay);
                 if (_controlByExternalDisplay)
                 {
                     UpdateTaskbarState(); // 有効になったらすぐに状態を更新
