@@ -1,6 +1,4 @@
 using Microsoft.Win32;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace TaskBarChanger
 {
@@ -16,9 +14,27 @@ namespace TaskBarChanger
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             SystemEvents.DisplaySettingsChanged += new EventHandler(SystemEvents_DisplaySettingsChanged);
+            SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+            UpdateIcons(); // アイコンを初期化
             UpdateTaskbarState(); // 初期状態を設定
             CreateNotifyIcon();
             Application.Run();
+        }
+
+        private static void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+        {
+            if (e.Category == UserPreferenceCategory.General)
+            {
+                UpdateIcons();
+                UpdateNotifyIcon(TaskbarHelper.IsNotAutoHide());
+            }
+        }
+
+        private static void UpdateIcons()
+        {
+            var isLight = TaskbarHelper.IsSystemUsesLightTheme();
+            showIcon = isLight ? showIconLight : showIconDark;
+            hideIcon = isLight ? hideIconLight : hideIconDark;
         }
 
         private static void UpdateTaskbarState()
@@ -39,8 +55,17 @@ namespace TaskBarChanger
         }
 
         static readonly NotifyIcon notifyIcon = new NotifyIcon();
-        static Icon showIcon = new Icon("Icon_show.ico");
-        static Icon hideIcon = new Icon("Icon_hide.ico");
+        // ライトテーマ用アイコン
+        static Icon showIconLight = new Icon("Icon_show_light.ico");
+        static Icon hideIconLight = new Icon("Icon_hide_light.ico");
+        // ダークテーマ用アイコン (仮に同じものを設定)
+        static Icon showIconDark = new Icon("Icon_show_dark.ico");
+        static Icon hideIconDark = new Icon("Icon_hide_dark.ico");
+
+        // 現在のテーマに応じたアイコン
+        static Icon showIcon = showIconDark;
+        static Icon hideIcon= hideIconDark;
+
 
         private static void CreateNotifyIcon()
         {

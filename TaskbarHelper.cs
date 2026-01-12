@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
- public static class TaskbarHelper {
+public static class TaskbarHelper {
     private const int TrayAbsAutoHide = 1;
 
     private const int TrayAbsAlwaysOnTop = 2;
@@ -23,6 +24,14 @@ using System.Runtime.InteropServices;
         _msg.lParam = isAutoHide ? TrayAbsAutoHide : TrayAbsAlwaysOnTop;
         _ = SHAppBarMessage(TrayAbmSetState, ref _msg);
         return _msg.lParam == TrayAbsAutoHide;
+    }
+
+    public static bool IsSystemUsesLightTheme()
+    {
+        using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"))
+        {
+            return key?.GetValue("SystemUsesLightTheme") is 1;
+        }
     }
 
     /// <summary>

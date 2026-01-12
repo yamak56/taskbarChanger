@@ -9,10 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Icon_show.ico">
+    <None Update="Icon_show_dark.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Icon_hide.ico">
+    <None Update="Icon_hide_dark.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Icon_show_light.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Icon_hide_light.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
