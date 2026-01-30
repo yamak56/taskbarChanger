@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Win32;
 
 namespace TaskBarChanger
@@ -56,15 +57,26 @@ namespace TaskBarChanger
 
         static readonly NotifyIcon notifyIcon = new NotifyIcon();
         // ライトテーマ用アイコン
-        static Icon showIconLight = new Icon("Icon_show_light.ico");
-        static Icon hideIconLight = new Icon("Icon_hide_light.ico");
+        static Icon showIconLight = LoadIconFromResource("Icon_show_light.ico");
+        static Icon hideIconLight = LoadIconFromResource("Icon_hide_light.ico");
         // ダークテーマ用アイコン (仮に同じものを設定)
-        static Icon showIconDark = new Icon("Icon_show_dark.ico");
-        static Icon hideIconDark = new Icon("Icon_hide_dark.ico");
+        static Icon showIconDark = LoadIconFromResource("Icon_show_dark.ico");
+        static Icon hideIconDark = LoadIconFromResource("Icon_hide_dark.ico");
 
         // 現在のテーマに応じたアイコン
         static Icon showIcon = showIconDark;
         static Icon hideIcon= hideIconDark;
+
+        // 埋め込みリソースからアイコンを読み込むヘルパーメソッド
+        private static Icon LoadIconFromResource(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fullResourceName = $"TaskBarChanger.{resourceName}";
+            using var stream = assembly.GetManifestResourceStream(fullResourceName);
+            if (stream == null)
+                throw new FileNotFoundException($"埋め込みリソース '{fullResourceName}' が見つかりません");
+            return new Icon(stream);
+        }
 
 
         private static void CreateNotifyIcon()

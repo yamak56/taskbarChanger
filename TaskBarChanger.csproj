@@ -6,21 +6,18 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- 単一ファイル発行設定 -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <IncludeNativeLibrariesForSelfContained>true</IncludeNativeLibrariesForSelfContained>
+    <IncludeAllContentForSelfContained>true</IncludeAllContentForSelfContained>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Icon_show_dark.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Icon_hide_dark.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Icon_show_light.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Icon_hide_light.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Icon_show_light.ico" />
+    <EmbeddedResource Include="Icon_hide_light.ico" />
+    <EmbeddedResource Include="Icon_show_dark.ico" />
+    <EmbeddedResource Include="Icon_hide_dark.ico" />
   </ItemGroup>
 
 </Project>
