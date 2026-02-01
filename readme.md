@@ -1,7 +1,7 @@
-# TaskbarChamger
-1) タスクバーのアイコンをダブルクリックで、タスクバーの"常に表示"と"自動的に隠す"を切り替えます
-2) アイコン右クリックで"外部ディスプレイによる制御"をONにすると、タスクバーが以下の動作になります  
-液タブのようにメインディスプレイの下に外部ディスプレイがある場合に便利です
-- 外部ディスプレイなし: 自動的に隠す
-- 外部ディスプレイあり: 常に表示
+# TaskbarChanger
+1) Double-click the taskbar icon to toggle the taskbar between "Always show" and "Auto-hide"
+2) Right-click the icon and enable "External Display Control" to make the taskbar behave as follows  
+This is useful when you have an external display below the main display, such as a pen display
+- No external display: Auto-hide
+- External display connected: Always show
 

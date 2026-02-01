@@ -91,7 +91,7 @@ namespace TaskBarChanger
         {
             var menu = new ContextMenuStrip();
 
-            var externalDisplayControlMenuItem = new ToolStripMenuItem("外部ディスプレイによる制御");
+            var externalDisplayControlMenuItem = new ToolStripMenuItem("External Display Control");
             externalDisplayControlMenuItem.CheckOnClick = true;
             externalDisplayControlMenuItem.Checked = _controlByExternalDisplay;
             externalDisplayControlMenuItem.Click += (s, e) =>
@@ -105,7 +105,7 @@ namespace TaskBarChanger
             };
             menu.Items.Add(externalDisplayControlMenuItem);
 
-            menu.Items.Add("終了", null, (s, e) =>
+            menu.Items.Add("Exit", null, (s, e) =>
             {
                 Application.Exit();
             });
