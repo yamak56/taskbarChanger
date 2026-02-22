@@ -1,7 +1,8 @@
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-public static class TaskbarHelper {
+public static class TaskbarHelper
+{
     private const int TrayAbsAutoHide = 1;
 
     private const int TrayAbsAlwaysOnTop = 2;
@@ -12,11 +13,11 @@ public static class TaskbarHelper {
     private static AppbarData _msg;
 
 
-    public static bool IsNotAutoHide() => SHAppBarMessage(TrayAbmGetState, ref _msg) == IntPtr.Zero;
+    public static bool IsAutoHide() => SHAppBarMessage(TrayAbmGetState, ref _msg) == TrayAbsAutoHide;
 
-    public static bool ChangeAutoHideState()
+    public static bool ToggleAutoHideState()
     {
-        return SetAutoHideState(IsNotAutoHide());
+        return SetAutoHideState(!IsAutoHide());
     }
 
     public static bool SetAutoHideState(bool isAutoHide)

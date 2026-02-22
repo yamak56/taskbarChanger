@@ -27,7 +27,7 @@ namespace TaskBarChanger
             if (e.Category == UserPreferenceCategory.General)
             {
                 UpdateIcons();
-                UpdateNotifyIcon(TaskbarHelper.IsNotAutoHide());
+                UpdateNotifyIcon(TaskbarHelper.IsAutoHide());
             }
         }
 
@@ -65,7 +65,7 @@ namespace TaskBarChanger
 
         // 現在のテーマに応じたアイコン
         static Icon showIcon = showIconDark;
-        static Icon hideIcon= hideIconDark;
+        static Icon hideIcon = hideIconDark;
 
         // 埋め込みリソースからアイコンを読み込むヘルパーメソッド
         private static Icon LoadIconFromResource(string resourceName)
@@ -114,7 +114,7 @@ namespace TaskBarChanger
 
         private static void NotifyIconOnMouseDoubleClick(object? s, MouseEventArgs e)
         {
-            var isAutoHide = TaskbarHelper.ChangeAutoHideState();
+            var isAutoHide = TaskbarHelper.ToggleAutoHideState();
             UpdateNotifyIcon(isAutoHide);
         }
 
